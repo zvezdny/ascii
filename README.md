@@ -17,6 +17,6 @@ npm run build
 
 Credit:
 
-[Model](https://skfb.ly/o9oHC) by LasquetiSpice is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+[Model](https://skfb.ly/o9oHC) 
 
-[Model2](https://skfb.ly/oUYWW) by oxterium is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+by LasquetiSpice is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).

@@ -13,25 +13,29 @@
 			import * as THREE from 'three';
          	import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';
             import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+            import { AnimationMixer } from 'three';
+            import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 			let camera, controls, scene, renderer, effect;
 
-			let sphere, plane , sphere2;
+			let sphere, plane , sphere2 , mixer;
 
 			const start = Date.now();
+
+			const clock = new THREE.Clock();
 
 			init();
 
 			function init() {
 
-				camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.y = 150;
-				camera.position.z = 500;
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.y = 50;
+				camera.position.z = 700;
 
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0, 0, 0 );
 
-				const pointLight1 = new THREE.PointLight( 0xffffff, 3, 0, 0 );
+				const pointLight1 = new THREE.PointLight( 0xffffff, 1, 0, 0 );
 				pointLight1.position.set( 500, 500, 500 );
 				scene.add( pointLight1 );
 
@@ -40,16 +44,35 @@
 				scene.add( pointLight2 );
 
 				sphere = new THREE.Mesh( new THREE.IcosahedronGeometry( 200 , 2 ), new THREE.MeshPhongMaterial( { flatShading: true } ) );
-				scene.add( sphere );
+				// scene.add( sphere );
 
 
      			sphere2 = new THREE.Mesh( new THREE.SphereGeometry( 200, 20, 10 ), new THREE.MeshPhongMaterial( { flatShading: true } ) );
      			// scene.add( sphere2 );
 
 
+                // glb
+
+                const loader = new GLTFLoader();
+                loader.load('models/animated_t-rex_dinosaur_biting_attack_loop.glb',
+                     (gltf) => {
+                        gltf.scene.scale.set(300,300,300);
+                        gltf.scene.position.set(0 ,-200, 0);
+                        // gltf.scene.rotation.y = -20;
+                        const root = gltf.scene;
+                        scene.add(root);
+                        if (gltf.animations && gltf.animations.length) {
+                          mixer = new THREE.AnimationMixer(gltf.scene);
+                          const action = mixer.clipAction(gltf.animations[0]);
+                          action.play();
+                        }
+                     });
+
+
+
 				// Plane
 
-				plane = new THREE.Mesh( new THREE.PlaneGeometry( 400, 400 ), new THREE.MeshBasicMaterial( { color: 0xe4e0e0 } ) );
+				plane = new THREE.Mesh( new THREE.PlaneGeometry( 800, 800 ), new THREE.MeshBasicMaterial( { color: 0xe4e0e0 } ) );
 				plane.position.y = - 200;
 				plane.rotation.x = - Math.PI / 2;
 				scene.add( plane );
@@ -58,9 +81,9 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.setAnimationLoop( animate );
 
-				effect = new AsciiEffect( renderer, ' #&!2!67', { invert: true } );
+				effect = new AsciiEffect( renderer, ' *3&(8&)', { invert: true } );
 				effect.setSize( window.innerWidth, window.innerHeight );
-				effect.domElement.style.color = 'orange';
+				effect.domElement.style.color = 'red';
 				effect.domElement.style.backgroundColor = 'black';
 
 				// Special case: append effect.domElement, instead of renderer.domElement.
@@ -79,6 +102,9 @@
 				window.addEventListener('dblclick', doubleClickResize );
 
 			}
+
+			const loader = new GLTFLoader();
+
 
 			function onWindowResize() {
 
@@ -120,7 +146,12 @@
 
 			//
 
+
 			function animate() {
+
+       			if (mixer) {
+                  mixer.update(clock.getDelta());
+                }
 
 				const timer = Date.now() - start;
 

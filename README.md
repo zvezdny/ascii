@@ -17,4 +17,6 @@ npm run build
 
 Credit:
 
-[Original](https://threejs.org/examples/#webgl_effects_ascii)
+[Model](https://skfb.ly/o9oHC) by LasquetiSpice is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+[Model2](https://skfb.ly/oUYWW) by oxterium is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).

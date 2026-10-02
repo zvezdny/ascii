@@ -4,31 +4,15 @@
 		<title>three.js webgl - effects - ascii</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<meta property="og:title" content="three.js webgl - effects - ascii">
-		<meta property="og:type" content="website">
-		<meta property="og:url" content="https://threejs.org/examples/webgl_effects_ascii.html">
-		<meta property="og:image" content="https://threejs.org/examples/screenshots/webgl_effects_ascii.jpg">
-		<link type="text/css" rel="stylesheet" href="main.css">
+		<link rel="stylesheet" href="main.css">
 	</head>
 
 	<body>
-		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - effects - ascii</div>
-
-		<script type="importmap">
-			{
-				"imports": {
-					"three": "../build/three.module.js",
-					"three/addons/": "./jsm/"
-				}
-			}
-		</script>
-
 		<script type="module">
 
 			import * as THREE from 'three';
-
-			import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';
-			import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
+         	import { AsciiEffect } from 'three/addons/effects/AsciiEffect.js';
+            import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 			let camera, controls, scene, renderer, effect;
 
@@ -40,7 +24,7 @@
 
 			function init() {
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.y = 150;
 				camera.position.z = 500;
 
@@ -84,11 +68,15 @@
 
 				document.body.appendChild( effect.domElement );
 
-				controls = new TrackballControls( camera, effect.domElement );
-
+				controls = new OrbitControls( camera, effect.domElement );
+				controls.enableDamping = true;
+				controls.dampingFactor = 0.02;
+				controls.enableRotate = true;
+				controls.minDistance = 400
 				//
 
 				window.addEventListener( 'resize', onWindowResize );
+				window.addEventListener('dblclick', doubleClickResize );
 
 			}
 
@@ -98,9 +86,37 @@
 				camera.updateProjectionMatrix();
 
 				renderer.setSize( window.innerWidth, window.innerHeight );
+			    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 				effect.setSize( window.innerWidth, window.innerHeight );
 
 			}
+
+			function doubleClickResize() {
+                    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+                    if(!fullscreenElement)
+                    {
+                        if(effect.domElement.requestFullscreen)
+                        {
+                            effect.domElement.requestFullscreen()
+                        }
+                        else if(effect.domElement.webkitRequestFullscreen)
+                        {
+                            effect.domElement.webkitRequestFullscreen()
+                        }
+                    }
+                    else
+                    {
+                        if(document.exitFullscreen)
+                        {
+                            document.exitFullscreen()
+                        }
+                        else if(document.webkitExitFullscreen)
+                        {
+                            document.webkitExitFullscreen()
+                        }
+                    }
+            }
 
 			//
 

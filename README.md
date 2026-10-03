@@ -1,9 +1,4 @@
 # ASCII T-Rex 🦖
-
-An animated 3D T-rex, rendered entirely in ASCII characters. Built with [three.js](https://threejs.org/) and its `AsciiEffect`.
-
-Drag to orbit, scroll to zoom, double-click for fullscreen.
-
 **Live demo:** https://ascii.zelva.live/
 
 ![demo](/public/medias/demo.gif)
